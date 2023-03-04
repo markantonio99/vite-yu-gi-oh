@@ -1,7 +1,7 @@
 <template>
   <main class="main-content">
     <ul class="card°_main">
-        <Character v-for="element in characters" :key="element" :caracter="element" />
+        <Character v-for="element in store.characters" :key="element" :caracter="element" />
     </ul>
   </main>
 </template>
@@ -9,13 +9,15 @@
 <script>
 import axios from 'axios'
 import Character from './Character.vue'
+import store from '../store'
 export default {
     components: {
         Character
     },
     data(){
         return{
-            characters: []
+            characters: [],
+            store,
         }
     },
     methods: {
@@ -25,7 +27,7 @@ export default {
             .get('https://db.ygoprodeck.com/api/v7/cardinfo.php')
             .then((res) =>{
                 console.log(res.data.data)
-                this.characters = res.data.data
+                this.store.characters = res.data.data
             })
         }
     },
