@@ -1,5 +1,9 @@
 <template>
   <main class="main-content">
+    <div class="container">
+       <Filter @onSearch="onSearcFn" />  
+    </div>
+    
     <ul class="card°_main">
         <Character v-for="element in store.characters" :key="element" :caracter="element" />
     </ul>
@@ -7,12 +11,15 @@
 </template>
 
 <script>
+import Filter from './Filter.vue'
 import axios from 'axios'
 import Character from './Character.vue'
 import store from '../store'
+
 export default {
     components: {
-        Character
+        Character,
+        Filter,
     },
     data(){
         return{
@@ -23,12 +30,17 @@ export default {
     methods: {
         fetchCharacters(){
             console.log('requires')
+            const search = this.store.search
             axios
-            .get('https://db.ygoprodeck.com/api/v7/cardinfo.php')
+            .get(`https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0&fname=${search}`)
             .then((res) =>{
                 console.log(res.data.data)
                 this.store.characters = res.data.data
             })
+        },
+        onSearcFn(){
+           console.log('ciao questa è la funzione onSearcFn')
+           this.fetchCharacters()
         }
     },
 
@@ -61,9 +73,11 @@ export default {
         justify-content: center;
     }
 
-    
+    .container{
+        height: 100px;
+    }
 
-
+ 
 
 }
 
